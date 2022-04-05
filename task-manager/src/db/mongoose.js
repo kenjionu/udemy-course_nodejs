@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-const { stringify } = require('postman-request/lib/url-parse');
-
-mongoose.connect('mongodb://localhost:27017/task-manager-api', {
+mongoose.connect(process.env.MONGODB_URL, {
 
     useNewUrlParser: true,
     useUnifiedTopology: true,
