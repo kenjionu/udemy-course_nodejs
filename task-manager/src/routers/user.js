@@ -1,11 +1,11 @@
 const express = require('express')
 const multer = require('multer')
+const sharp = require('sharp')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
+const { sendWelcomeEmail, sendCancelationEmail } = require('../emails/account')
 const router = new express.Router()
-const sharp = require('sharp')
-const  { sendWelcomeEmail, sendCancelationEmail } = require('../emails/account')
-const req = require('express/lib/request')
+
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
 
@@ -112,17 +112,17 @@ router.delete('/users/me/avatar', auth, async (req, res) => {
     res.send()
 })
 
-router.get('/users/:id/avatar', async(req, res) => {
+router.get('/users/:id/avatar', async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
-        if(!user || !user.avatar){
+
+        if (!user || !user.avatar) {
             throw new Error()
         }
 
-        res.set('Content-Type', 'image/jpg')
+        res.set('Content-Type', 'image/png')
         res.send(user.avatar)
-
-    } catch (error) {
+    } catch (e) {
         res.status(404).send()
     }
 })
